@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package upload;
+
+
+option go_package = "gcs-imageUpload/proto";
+
+
+service ImageManagementService {
+  rpc UploadImage(UploadImageRequest) returns (UploadImageResponse);
+  rpc GetImageDetail(GetImageDetailRequest) returns (GetImageDetailResponse);
+  rpc GetImageFeed(GetImageFeedRequest) returns (GetImageFeedResponse);
+  rpc UpdateImageDetail(UpdateImageDetailRequest) returns (UpdateImageDetailResponse);
+}
+
+
+message UploadImageRequest {
+  bytes image = 1;
+  string filename = 2;
+}
+
+
+message UploadImageResponse {
+  string url = 1;
+  repeated FaceAnnotation annotations = 2;
+}
+
+
+message GetImageDetailRequest {
+  string image_id = 1;
+}
+
+
+message GetImageDetailResponse {
+  string image_id = 1;
+  string url = 2;
+  repeated FaceAnnotation annotations = 3;
+}
+
+
+message GetImageFeedRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+
+message GetImageFeedResponse {
+  repeated ImageDetail images = 1;
+}
+
+
+message UpdateImageDetailRequest {
+  string image_id = 1;
+  repeated FaceAnnotation annotations = 2;
+}
+
+
+message UpdateImageDetailResponse {
+  bool success = 1;
+}
+
+
+message FaceAnnotation {
+  string joy = 1;
+  string sorrow = 2;
+  string anger = 3;
+  string surprise = 4;
+}
+
+
+message ImageDetail {
+  string image_id = 1;
+  string url = 2;
+  float average_emotion_score = 3;
+}
